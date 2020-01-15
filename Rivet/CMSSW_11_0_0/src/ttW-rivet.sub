@@ -1,0 +1,8 @@
+executable              = ttW-rivet.sh
+arguments               = $(myfile)
+output                  = output/batch_run_job.$(ClusterId).$(ProcId).out
+error                   = error/batch_run_job.$(ClusterId).$(ProcId).err
+log                     = log/batch_run_job.$(ClusterId).$(ProcId).log
++JobFlavour             = "longlunch"
+transfer_output_remaps  = "TTWJetsToLNu.yoda=rivet_output/TTWJetsToLNu.$(ClusterId).$(ProcId).yoda"
+queue myfile from TTWJetsToLNu_fileList.txt
