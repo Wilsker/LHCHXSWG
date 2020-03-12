@@ -26,5 +26,6 @@ process.genParticles2HepMC.genParticles = cms.InputTag("mergedGenParticles")
 process.rivetAnalyzer.HepMCCollection = cms.InputTag("genParticles2HepMC:unsmeared")
 process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2019_TTH_TTZBCKG')
 process.rivetAnalyzer.OutputFile = cms.string("TTZToLLNuNu.yoda")
+process.rivetAnalyzer.useLHEweights = cms.bool(True)
 
 process.p = cms.Path(process.mergedGenParticles*process.genParticles2HepMC*process.rivetAnalyzer)

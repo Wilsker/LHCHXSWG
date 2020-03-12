@@ -1,4 +1,3 @@
-// -*- C++ -*-
 #include "Rivet/Analysis.hh"
 #include "Rivet/Projections/FinalState.hh"
 #include "Rivet/Projections/TauFinder.hh"
@@ -21,7 +20,6 @@
 
 namespace Rivet {
 
-
   /// @brief Add a short analysis description here
   class CMS_2019_TTH_TTWBCKG : public Analysis {
 
@@ -29,8 +27,7 @@ namespace Rivet {
 
     /// Constructor
     DEFAULT_RIVET_ANALYSIS_CTOR(CMS_2019_TTH_TTWBCKG);
-
-
+    //CMS_2019_TTH_TTWBCKG() : Analysis("CMS_2019_TTH_TTWBCKG") {   }
     /// @name Analysis methods
     //@{
 
@@ -56,6 +53,7 @@ namespace Rivet {
       //Projection to find prompt electrons
       IdentifiedFinalState el_id(lepfs);
       el_id.acceptIdPair(PID::ELECTRON);
+
       PromptFinalState electrons(el_id);
       electrons.acceptTauDecays(true);
       declareProjection(electrons,"electrons");
@@ -96,48 +94,42 @@ namespace Rivet {
       jets.useInvisibles();
       declareProjection(jets, "Jets");
 
-      // Projection to find B-jets
       declareProjection(HeavyHadrons(Cuts::abseta < 5 && Cuts::pT > 5*GeV), "BCHadrons");
-
-      // Projection to find MET
-      declareProjection(MissingMomentum(FinalState(Cuts::abseta < 5)),"MissingET");
+      //declareProjection(MissingMomentum(FinalState(Cuts::abseta < 5)),"MissingET");
+      //declareProjection(MissingMomentum(FinalState(-5,5,0*GeV)),"MissingET");
+      declareProjection(MissingMomentum(FinalState(Cuts::etaIn(-5, 5))),"MissingET");
 
       ht_bins ={0,120,180,240,300,360,440,540,680,900,1500};
       ht_j_bins={0,90,140,180,240,300,380,460,540,650,850,1500};
       ht_l_bins={0,20,50,80,110,150,200,300,400,550,800};
       met_bins={0,20,50,80,120,180,300,500,1200};
-      lep_bins={0,20,25,33,45,60,80,110,160,500};
-      jet_bins={0,20,25,33,45,60,80,110,200};
-      bjet_bins={0,20,25,33,45,60,80,110,150,200,300,500};
+      lep_bins={0,20,25,33,45,60,80,100,120,160,200,250,300,400,500};
+      jet_bins={0,20,25,33,45,60,80,100,120,160,200,250,300,400,500};
+      bjet_bins={0,20,25,33,45,60,80,100,120,160,200,250,300,400,500};
 
       //presel, two light-leptons , same sign  ,lepton0 pT, geq1b,geq3jet,regions
-      vector<string> s_cutDescs =  {  "Preselections","Nleps","SS","lepPt0>25","1b","3j",
-      "0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t >1b >3j"};
+      vector<string> s_cutDescs =  {"Preselections","Nleps","SS","lepPt0>25","1b","3j","0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t >1b >3j"};
 
       int Ncuts = s_cutDescs.size();
+      h_cutflow_2l[0] = book(h_cutflow_2l[0],(const std::string&)"cf2l",(size_t)Ncuts, 0.,(double)Ncuts);
+      h_cutflow_2l[1] = book(h_cutflow_2l[1],(const std::string&)"cf2l_raw",(size_t)Ncuts, 0.,(double)Ncuts);
 
-      h_cutflow_2l[0] = book(h_cutflow_2l[0],(const std::string&)"cf2l", (size_t)Ncuts, 0., (double)Ncuts);
-      h_cutflow_2l[1] = book(h_cutflow_2l[1],(const std::string&)"cf2l_raw", (size_t)Ncuts, 0., (double)Ncuts);
-
-      vector<int> lep_bins_v={0,20,25,33,45,60,80,110,160,500};
+      vector<int> lep_bins_v={0,20,25,33,45,60,80,100,120,160,200,300,400,500};
       vector<string> region_names={"0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t 1b 3j"};
 
       for(int i=0; i<(int)region_names.size();i++){
         _h_hist_nJets[i] = book(_h_hist_nJets[i],("nJets_"+to_string(i)), (size_t)7, 2.5, 9.5);
-        _h_hist_lep_Pt_0[i] = book(_h_hist_lep_Pt_0[i],("lep_Pt_0_"+to_string(i)),{0,20,25,33,45,60,80,110,160,500});
+        _h_hist_lep_Pt_0[i] = book(_h_hist_lep_Pt_0[i],("lep_Pt_0_"+to_string(i)),{0,20,25,33,45,60,80,100,120,160,200,300,400,500});
         _h_hist_lep_Pt_1[i] = book(_h_hist_lep_Pt_1[i],("lep_Pt_1_"+to_string(i)), lep_bins);
         _h_hist_DRll01[i] = book(_h_hist_DRll01[i],("DRll01_"+to_string(i)), dr_bins, 0., dr_max);
-        //jets:
         _h_hist_jet_Pt_1[i] = book(_h_hist_jet_Pt_1[i],("jet_Pt_1_"+to_string(i)), jet_bins);
         _h_hist_jet_Pt_2[i] = book(_h_hist_jet_Pt_2[i],("jet_Pt_2_"+to_string(i)), jet_bins);
         _h_hist_jet_Pt_3[i] = book(_h_hist_jet_Pt_3[i],("jet_Pt_3_"+to_string(i)), jet_bins);
         _h_hist_jet_Pt_4[i] = book(_h_hist_jet_Pt_4[i],("jet_Pt_4_"+to_string(i)), jet_bins);
         _h_hist_jet_Pt_5[i] = book(_h_hist_jet_Pt_5[i],("jet_Pt_5_"+to_string(i)), jet_bins);
         _h_hist_jet_Pt_6[i] = book(_h_hist_jet_Pt_6[i],("jet_Pt_6_"+to_string(i)), jet_bins);
-        //bjets
         _h_hist_Bjet_Pt_0[i] = book(_h_hist_Bjet_Pt_0[i],("Bjet_Pt_0_"+to_string(i)),bjet_bins);
         _h_hist_Bjet_Pt_1[i] = book(_h_hist_Bjet_Pt_1[i],("Bjet_Pt_1_"+to_string(i)), jet_bins);
-
         _h_hist_min_DRl0j[i] = book(_h_hist_min_DRl0j[i],("min_DRl0j_"+to_string(i)), dr_bins, 0., dr_max);
         _h_hist_min_DRl1j[i] = book(_h_hist_min_DRl1j[i],("min_DRl1j_"+to_string(i)), dr_bins, 0., dr_max);
         _h_hist_maxEta_ll[i] = book(_h_hist_maxEta_ll[i],("maxEta_ll_"+to_string(i)), (size_t)13, 0, 2.6); // maxEta = max( fabs( lep_Eta_0 ), fabs( lep_Eta_1 ) );
@@ -146,17 +138,12 @@ namespace Rivet {
         _h_hist_HT[i] = book(_h_hist_HT[i],("HT_"+to_string(i)),ht_bins);// 100, 0., 1000.
         _h_hist_nBtagJets[i] = book(_h_hist_nBtagJets[i],("nBtagJets_"+to_string(i)), (size_t)3, 0.5, 3.5);
         _h_hist_MET[i] = book(_h_hist_MET[i],("MET_"+to_string(i)),met_bins);//100, 0., 1000.
-        //
         _h_hist_lep_Eta_0[i] = book(_h_hist_lep_Eta_0[i],("lep_Eta_0_"+to_string(i)), (size_t)13, -2.6, 2.6);
         _h_hist_lep_Eta_1[i] = book(_h_hist_lep_Eta_1[i],("lep_Eta_1_"+to_string(i)),(size_t)13, -2.6, 2.6);
         _h_hist_lep_Phi_0[i] = book(_h_hist_lep_Phi_0[i],("lep_Phi_0_"+to_string(i)),(size_t)16, -3.2, 3.2);
         _h_hist_lep_Phi_1[i] = book(_h_hist_lep_Phi_1[i],("lep_Phi_1_"+to_string(i)),(size_t)16, -3.2, 3.2);
-
         _h_hist_lep_dPhi[i] = book(_h_hist_lep_dPhi[i],("lep_dPhi_"+to_string(i)),  (size_t)16, 0, 6.4);
-
       }
-
-
     }
 
     /// Perform the per-event analysis
@@ -347,9 +334,8 @@ namespace Rivet {
           _h_hist_lep_Phi_1[i]->fill(lepVec.at(1).phi()-pi);
           _h_hist_lep_Eta_0[i]->fill(lepVec.at(0).eta());
           _h_hist_lep_Eta_1[i]->fill(lepVec.at(1).eta());
-        }
-      }//region selection
-    //} //region loop
+        }//region selection
+      }//region loop
   }//analyze loop
 
 
@@ -366,7 +352,7 @@ namespace Rivet {
     private:
 
       // @name Histogram data members
-      //@{
+      //@
       //
       Histo1DPtr h_cutflow_2l[2];
       Histo1DPtr _h_hist_DRll01[10];

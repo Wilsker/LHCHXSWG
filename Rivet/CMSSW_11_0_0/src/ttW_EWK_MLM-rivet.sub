@@ -1,0 +1,8 @@
+executable              = ttW-rivet.sh
+arguments               = $(myfile)
+output                  = output/ttw_EWKCorr_MLM.$(ClusterId).$(ProcId).out
+error                   = error/ttw_EWKCorr_MLM.$(ClusterId).$(ProcId).err
+log                     = log/ttw_EWKCorr_MLM.$(ClusterId).$(ProcId).log
++JobFlavour             = "microcentury"
+transfer_output_remaps  = "TTWJetsToLNu.yoda=rivet_output/TTWJetsToLNu.EWK.MLM.$(ClusterId).$(ProcId).yoda"
+queue myfile from TTWJetsEWK_MLM_5f_fileList_0.txt

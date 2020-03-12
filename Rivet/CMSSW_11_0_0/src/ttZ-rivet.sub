@@ -1,8 +1,8 @@
-executable              = ttW-rivet.sh
+executable              = ttZ-rivet.sh
 arguments               = $(myfile)
 output                  = output/batch_run_job.$(ClusterId).$(ProcId).out
 error                   = error/batch_run_job.$(ClusterId).$(ProcId).err
 log                     = log/batch_run_job.$(ClusterId).$(ProcId).log
-+JobFlavour             = "microcentury"
-transfer_output_remaps  = "TTWJetsToLNu.yoda=rivet_output/TTWJetsToLNu.$(ClusterId).$(ProcId).yoda"
-queue myfile from TTWJetsToLNu_fileList_2.txt
++JobFlavour             = "workday"
+transfer_output_remaps  = "TTZToLLNuNu.yoda=rivet_output/TTZToLLNuNu.$(ClusterId).$(ProcId).yoda"
+queue myfile from TTZToLLNuNu_fileList.txt

@@ -5,7 +5,8 @@ import os
 process = cms.Process("GEN")
 
 options = VarParsing.VarParsing ('analysis')
-options.inputFiles = '/store/mc/RunIIFall17MiniAODv2/TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/70000/00DFE1C9-BEAD-E811-A06B-0242AC130002.root'
+#options.inputFiles = '/store/mc/RunIIFall17MiniAODv2/TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/70000/A2184ECC-A9AF-E811-A9C6-FA163E042DE1.root'
+options.inputFiles = '/store/cmst3/group/tthlep/gpetrucc/prod/Fall17/TTWJetsToLNu_EWK_5f_MLM/TTWJetsToLNu_EWK_5f_MLM.batch1.job0.root'
 options.maxEvents = -1
 options.parseArguments()
 
@@ -26,5 +27,8 @@ process.genParticles2HepMC.genParticles = cms.InputTag("mergedGenParticles")
 process.rivetAnalyzer.HepMCCollection = cms.InputTag("genParticles2HepMC:unsmeared")
 process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2019_TTH_TTWBCKG')
 process.rivetAnalyzer.OutputFile = cms.string("TTWJetsToLNu.yoda")
+process.rivetAnalyzer.useLHEweights = cms.bool(True)
+#process.rivetAnalyzer.LHEweightNumber = cms.int32(0)
+
 
 process.p = cms.Path(process.mergedGenParticles*process.genParticles2HepMC*process.rivetAnalyzer)

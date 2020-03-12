@@ -13,4 +13,6 @@ popd
 echo ${PWD}
 which cmsRun
 echo "input file: " $1
-cmsRun /afs/cern.ch/work/j/jthomasw/private/IHEP/LHCHXS-WG1/Rivet/CMSSW_11_0_0/src/Rivet/HIGGSTOP/test/runRivetAnalyzer_TTH_TTWBCKG_cfg.py inputFiles="file:"$1
+OFILE="TTZToLLNuNu.yoda"
+echo "output file: " ${OFILE}
+cmsRun /afs/cern.ch/work/j/jthomasw/private/IHEP/LHCHXS-WG1/Rivet/CMSSW_11_0_0/src/Rivet/HIGGSTOP/test/runRivetAnalyzer_TTH_TTZBCKG_cfg.py inputFiles="file:"$1
