@@ -18,6 +18,7 @@ cmsRun <CMSSW config>
 - The submission script needs both the bash script to run the job and a list of files to run on e.g. XXX_fileList.txt.
 - One can change the output names, condor queue etc as suits.
 - Outputs, error and log files are stored in the appropriately named directories.
+- Before running on condor, make sure the output directory exists if you are moving the output files in the submission script e.g 'mkdir rivet_output'
 - To submit a job for each file in the file list simply run:
 '''
 condor_submit XXX-rivet.sub
